@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.EditText;
 
 
 public class MainActivity extends AppCompatActivity {
-    private Button Tcp_server,Tcp_client;
+    private Button Join;
+    private EditText Username;
 
 
     @Override
@@ -18,20 +19,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Tcp_server = findViewById(R.id.tcp_server);
-        Tcp_client = findViewById(R.id.tcp_client);
+        Join = findViewById(R.id.joinBtn);
+        Username = findViewById(R.id.username);
 
-        Tcp_server.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Server.class);
-                startActivity(intent);
-            }
-        });
-        Tcp_client.setOnClickListener(new View.OnClickListener() {
+        Join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, client.class);
+                intent.putExtra("username", Username.getText().toString());
                 startActivity(intent);
             }
         });

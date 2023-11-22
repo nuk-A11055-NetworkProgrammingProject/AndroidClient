@@ -19,9 +19,6 @@
             android:name=".client"
             android:exported="false" />
         <activity
-            android:name=".Server"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -1,5 +1,6 @@
 package com.example.tcp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class client extends AppCompatActivity {
     private BufferedReader bufferedReader;
     private TextView receivedMessages;
     private EditText editText;
+    private Button button;
     String username;
     private final List<String> pendingMessages = new ArrayList<>();
 
@@ -34,16 +36,19 @@ public class client extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
-        username = "CHINOBIO";
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+
+        // Get UI element
         receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
-        Button button = findViewById(R.id.button);
+        button = findViewById(R.id.button);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage(editText.getText().toString());
-
+                editText.setText("");
             }
         });
 
@@ -54,7 +59,7 @@ public class client extends AppCompatActivity {
                     socket = new Socket("10.0.2.2", 12345);
                     bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    bufferedWriter.write(username);
+                    bufferedWriter.write(username + " is connected.");
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
 
@@ -66,6 +71,7 @@ public class client extends AppCompatActivity {
             }
         }).start();
     }
+
     public void listenForMessage(){
         new Thread(new Runnable() {
             @Override
@@ -80,13 +86,14 @@ public class client extends AppCompatActivity {
                             }
                         });
                     }catch (IOException e){
-                        closeEverything(socket,bufferedReader,bufferedWriter);
+                        closeEverything();
                     }
                 }
             }
         }).start();
     }
-    public void closeEverything(Socket socket,BufferedReader bufferedReader,BufferedWriter bufferedWriter){
+
+    public void closeEverything(){
         try{
             if(bufferedReader != null){
                 bufferedReader.close();
@@ -102,25 +109,20 @@ public class client extends AppCompatActivity {
         }
 
     }
+
     private void sendMessage(final String message) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (bufferedWriter != null) {
-                        bufferedWriter.write(username);
-                        bufferedWriter.newLine();
-                        bufferedWriter.flush();
-
-                        bufferedWriter.write(username + " :" + message);
+                        bufferedWriter.write(username + ": " + message);
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
                     }
                 } catch (IOException e) {
-                    closeEverything(socket, bufferedReader, bufferedWriter);
+                    closeEverything();
                 }
-
-
             }
         }).start();
     }
