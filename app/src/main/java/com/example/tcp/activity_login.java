@@ -75,9 +75,7 @@ public class activity_login extends AppCompatActivity {
 
                         String response = bufferedReader.readLine();
                         check[0] = Boolean.parseBoolean(response);
-                        if(response.equals("false")){
-                            bufferedWriter.flush();
-                        }
+                        aa.setText(response);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

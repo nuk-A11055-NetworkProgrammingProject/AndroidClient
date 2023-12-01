@@ -6,37 +6,98 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@drawable/test_ground"
     android:padding="16dp">
-
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="USERNAME"
-        android:id="@+id/inputUser"
+        android:text="CHAT"
+        android:gravity="center"
+        android:textSize="40dp"
         />
 
+    <EditText
+        android:id="@+id/inputUser"
+        android:drawableStart="@drawable/baseline_email_24"
+        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/textview_border"
+        android:gravity="center"
+        android:hint="username"
+        android:padding="10dp"
+        android:textSize="25dp" />
     <EditText
         android:id="@+id/inputPass"
+        android:drawableStart="@drawable/baseline_lock_24"
+        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="PASSWORD" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/textview_border"
+        android:gravity="center"
+        android:hint="PASSWORD"
+        android:padding="10dp"
+        android:textSize="20dp" />
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="SAME PASSWORD"
         android:id="@+id/inputSamePass"
-        />
-    <Button
+        android:drawableStart="@drawable/baseline_lock_person_24"
+        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnregister"
-        android:text="register"
-        />
-    <Button
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/textview_border"
+        android:gravity="center"
+        android:hint="SAME PASSWORD"
+        android:padding="10dp"
+        android:textSize="20dp" />
+
+
+<!--    <Button-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/btnregister"-->
+<!--        android:text="register"-->
+<!--        />-->
+<!--    <Button-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/btnlogin"-->
+<!--        android:text="login"-->
+<!--        />-->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnlogin"
-        android:text="login"
-        />
+        android:layout_marginTop="0dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/btnregister"
+            android:backgroundTint="#7BC6CF"
+            android:text="register"
+            android:textSize="20dp"
+            android:layout_margin="20dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:id="@+id/btnlogin"
+            android:backgroundTint="#7BC6CF"
+            android:text="login"
+            android:layout_margin="20dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

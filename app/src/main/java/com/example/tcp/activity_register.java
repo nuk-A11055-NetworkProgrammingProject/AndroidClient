@@ -152,7 +152,6 @@ public class activity_register extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         return check[0];
     }
 }

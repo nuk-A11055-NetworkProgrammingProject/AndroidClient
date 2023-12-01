@@ -1,5 +1,6 @@
 package com.example.tcp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,13 +29,13 @@ public class client extends AppCompatActivity {
     String username;
     private final List<String> pendingMessages = new ArrayList<>();
 
-    // ... 其他代碼 ...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
-        username = "CHINOBIO";
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
         receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
         Button button = findViewById(R.id.button);
@@ -43,7 +44,6 @@ public class client extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendMessage(editText.getText().toString());
-
             }
         });
 
@@ -54,10 +54,10 @@ public class client extends AppCompatActivity {
                     socket = new Socket("10.0.2.2", 12345);
                     bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                     bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    bufferedWriter.write(username);
-                    bufferedWriter.newLine();
-                    bufferedWriter.flush();
-
+//                    bufferedWriter.write(username);
+//                    bufferedWriter.newLine();
+//                    bufferedWriter.flush();
+                    receivedMessages.append("client : " + username  + " is connect" + "\n");
                     sendPendingMessages();
                     listenForMessage();
                 } catch (IOException e) {
@@ -76,7 +76,7 @@ public class client extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                receivedMessages.append(msgFromGroupChat + "\n");
+                                receivedMessages.append(msgFromGroupChat  + "\n");
                             }
                         });
                     }catch (IOException e){
@@ -108,11 +108,11 @@ public class client extends AppCompatActivity {
             public void run() {
                 try {
                     if (bufferedWriter != null) {
-                        bufferedWriter.write(username);
-                        bufferedWriter.newLine();
-                        bufferedWriter.flush();
+//                        bufferedWriter.write(username);
+//                        bufferedWriter.newLine();
+//                        bufferedWriter.flush();
 
-                        bufferedWriter.write(username + " :" + message);
+                        bufferedWriter.write(username + " : " + message);
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
                     }
@@ -127,7 +127,7 @@ public class client extends AppCompatActivity {
 //receivedMessages.append(editText.getText().toString() + "\n");
     private void sendPendingMessages() {
         for (String message : pendingMessages) {
-//            receivedMessages.append("CHINOBIO : " + message + "\n");
+            receivedMessages.append(username + " : " + message + "\n");
             sendMessage(message);
         }
         pendingMessages.clear();
