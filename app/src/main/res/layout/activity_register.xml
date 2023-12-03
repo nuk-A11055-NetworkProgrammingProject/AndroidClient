@@ -8,13 +8,13 @@
     android:gravity="center"
     android:background="@drawable/test_ground"
     android:padding="16dp">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CHAT"
         android:gravity="center"
-        android:textSize="40dp"
-        />
+        android:textSize="40dp"/>
 
     <EditText
         android:id="@+id/inputUser"
@@ -30,6 +30,7 @@
         android:hint="username"
         android:padding="10dp"
         android:textSize="25dp" />
+
     <EditText
         android:id="@+id/inputPass"
         android:drawableStart="@drawable/baseline_lock_24"
@@ -44,6 +45,7 @@
         android:hint="PASSWORD"
         android:padding="10dp"
         android:textSize="20dp" />
+
     <EditText
         android:id="@+id/inputSamePass"
         android:drawableStart="@drawable/baseline_lock_person_24"
@@ -59,7 +61,6 @@
         android:padding="10dp"
         android:textSize="20dp" />
 
-
 <!--    <Button-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
@@ -72,6 +73,7 @@
 <!--        android:id="@+id/btnlogin"-->
 <!--        android:text="login"-->
 <!--        />-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

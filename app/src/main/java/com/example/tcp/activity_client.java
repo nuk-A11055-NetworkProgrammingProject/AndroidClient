@@ -18,17 +18,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class client extends AppCompatActivity {
-
-    private Socket socket;
+public class activity_client extends AppCompatActivity {
     private String msgFromGroupChat;
-    private BufferedWriter bufferedWriter;
-    private BufferedReader bufferedReader;
     private TextView receivedMessages;
     private EditText editText;
+    private Button button;
     String username;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
     private final List<String> pendingMessages = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,27 @@ public class client extends AppCompatActivity {
         username = intent.getStringExtra("username");
         receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
-        Button button = findViewById(R.id.button);
+        button = findViewById(R.id.button);
+
+        socket = SocketConnection.get().getSocket();
+        try {
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+//                bufferedWriter.write(username);
+//                bufferedWriter.newLine();
+//                bufferedWriter.flush();
+//                receivedMessages.append("client : " + username  + " is connect" + "\n");
+//                sendPendingMessages();
+                listenForMessage();
+            }
+        }).start();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,25 +65,6 @@ public class client extends AppCompatActivity {
                 sendMessage(editText.getText().toString());
             }
         });
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    socket = new Socket("10.0.2.2", 12345);
-                    bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                    bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                    bufferedWriter.write(username);
-//                    bufferedWriter.newLine();
-//                    bufferedWriter.flush();
-                    receivedMessages.append("client : " + username  + " is connect" + "\n");
-                    sendPendingMessages();
-                    listenForMessage();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
     public void listenForMessage(){
         new Thread(new Runnable() {
@@ -72,6 +72,7 @@ public class client extends AppCompatActivity {
             public void run() {
                 while (socket.isConnected()){
                     try{
+
                         msgFromGroupChat = bufferedReader.readLine();
                         runOnUiThread(new Runnable() {
                             @Override
@@ -80,7 +81,7 @@ public class client extends AppCompatActivity {
                             }
                         });
                     }catch (IOException e){
-                        closeEverything(socket,bufferedReader,bufferedWriter);
+//                        closeEverything(socket,bufferedReader,bufferedWriter);
                     }
                 }
             }
@@ -100,27 +101,21 @@ public class client extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
         }
-
     }
+
     private void sendMessage(final String message) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (bufferedWriter != null) {
-//                        bufferedWriter.write(username);
-//                        bufferedWriter.newLine();
-//                        bufferedWriter.flush();
-
                         bufferedWriter.write(username + " : " + message);
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
                     }
                 } catch (IOException e) {
-                    closeEverything(socket, bufferedReader, bufferedWriter);
+//                    closeEverything(socket, bufferedReader, bufferedWriter);
                 }
-
-
             }
         }).start();
     }
