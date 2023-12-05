@@ -32,7 +32,7 @@ public class activity_login extends AppCompatActivity {
         Username = findViewById(R.id.InputUsername);
         Password = findViewById(R.id.InputPassword);
         BTNLOGIN = findViewById(R.id.BTNLOGIN);
-        aa = findViewById(R.id.TEST);
+//        aa = findViewById(R.id.TEST);
 
         socket = SocketConnection.get().getSocket();
         try {
@@ -52,8 +52,9 @@ public class activity_login extends AppCompatActivity {
                 if (response != null) {
                     if(response.equals("Login success")){
                         // 登入成功，切換 Activity
-                        Intent intent = new Intent(activity_login.this, activity_client.class);
-                        intent.putExtra("username", Username.getText().toString());
+//                        ========================================
+                        Intent intent = new Intent(activity_login.this, MainActivity.class);
+//                        intent.putExtra("username", Username.getText().toString());
                         startActivity(intent);
                     } else {
                         // 顯示登入失敗原因
@@ -84,7 +85,7 @@ public class activity_login extends AppCompatActivity {
 
                         // 取得 server 回覆
                         response[0] = bufferedReader.readLine();
-                        aa.setText(response[0]);
+//                        aa.setText(response[0]);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

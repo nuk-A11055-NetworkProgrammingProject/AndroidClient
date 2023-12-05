@@ -14,7 +14,7 @@ public class SocketConnection {
             @Override
             public void run() {
                 try {
-                    socket = new Socket("10.0.2.2", 12345);
+                    socket = new Socket("10.0.2.2", 12346);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

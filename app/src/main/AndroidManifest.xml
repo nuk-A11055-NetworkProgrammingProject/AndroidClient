@@ -6,25 +6,34 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+<!--android:theme="@style/Theme.TCP" 18行-->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="TCP"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TCP"
+        android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
             android:name=".activity_client"
             android:exported="false" />
         <activity
             android:name=".activity_login"
+
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light"> <!-- 或者其他的 AppCompat 主題 -->
+
+            <!-- 活動的其他設置 -->
+        </activity>
+        <activity
             android:name=".activity_register"
+            android:theme="@style/Theme.AppCompat.Light"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
