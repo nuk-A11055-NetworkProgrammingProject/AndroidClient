@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -38,7 +39,8 @@ public class activity_register extends AppCompatActivity {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private Button register, login;
+    private Button register,login ;
+//    private ImageButton login;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,8 @@ public class activity_register extends AppCompatActivity {
         PASSWORD = findViewById(R.id.inputPass);
         SAMEPASS = findViewById(R.id.inputSamePass);
         register = findViewById(R.id.btnregister);
-        login = findViewById(R.id.btnlogin);
+//        login = findViewById(R.id.btnlogin);
+
 
         socket = SocketConnection.get().getSocket();
         try {
@@ -74,6 +77,8 @@ public class activity_register extends AppCompatActivity {
                         // 顯示 server 回傳的訊息
                         if (response != null) {
                             Toast.makeText(activity_register.this, response, Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(activity_register.this,activity_login.class);
+                            startActivity(intent);
                         }
                     } else {
                         // 確認密碼 跟密碼不同
@@ -83,13 +88,13 @@ public class activity_register extends AppCompatActivity {
             }
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity_register.this,activity_login.class);
-                startActivity(intent);
-            }
-        });
+//        login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(activity_register.this,activity_login.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     // tryToRegister() 回傳值有三種可能
