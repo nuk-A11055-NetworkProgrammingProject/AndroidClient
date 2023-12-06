@@ -21,7 +21,7 @@ import java.net.Socket;
 public class activity_login extends AppCompatActivity {
     private EditText Username,Password;
     private Button BTNLOGIN;
-    private TextView aa;
+    private TextView REGISTER;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -32,7 +32,8 @@ public class activity_login extends AppCompatActivity {
         Username = findViewById(R.id.InputUsername);
         Password = findViewById(R.id.InputPassword);
         BTNLOGIN = findViewById(R.id.BTNLOGIN);
-//        aa = findViewById(R.id.TEST);
+        REGISTER = findViewById(R.id.register_ek4);
+
 
         socket = SocketConnection.get().getSocket();
         try {
@@ -46,21 +47,35 @@ public class activity_login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // 傳送帳密給 server ，嘗試登入
-                String response = tryToLogin(Username.getText().toString(),Password.getText().toString());
+                String username = Username.getText().toString();
+                String password = Password.getText().toString();
+                String response = "";
 
-                if (response != null) {
-                    if(response.equals("Login success")){
-                        // 登入成功，切換 Activity
-//                        ========================================
-                        Intent intent = new Intent(activity_login.this, MainActivity.class);
-//                        intent.putExtra("username", Username.getText().toString());
-                        startActivity(intent);
-                    } else {
-                        // 顯示登入失敗原因
-                        Toast.makeText(activity_login.this,response,Toast.LENGTH_LONG).show();
-                    }
+                if (username.equals("") || password.equals("")) {
+                    Toast.makeText(activity_login.this, "請輸入資料", Toast.LENGTH_LONG).show();
+                } else {
+                    // 傳送帳密給 server ，嘗試登入
+                    response = tryToLogin(username, password);
                 }
+
+                if(response.equals("Login success")){
+                    // 登入成功，切換 Activity
+//                  ========================================
+                    Intent intent = new Intent(activity_login.this, MainActivity.class);
+                    intent.putExtra("username", Username.getText().toString());
+                    startActivity(intent);
+                } else {
+                    // 顯示登入失敗原因
+                    Toast.makeText(activity_login.this,response,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        REGISTER.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity_login.this, activity_register.class);
+                startActivity(intent);
             }
         });
     }

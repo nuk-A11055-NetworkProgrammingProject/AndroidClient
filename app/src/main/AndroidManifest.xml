@@ -17,30 +17,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
+
         <activity
             android:name=".activity_client"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
+
         <activity
             android:name=".activity_login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light"> <!-- 或者其他的 AppCompat 主題 -->
-
             <!-- 活動的其他設置 -->
         </activity>
+
         <activity
             android:name=".activity_register"
             android:theme="@style/Theme.AppCompat.Light"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
+
     </application>
 
 </manifest>

@@ -9,14 +9,11 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
 
-
-
         <RelativeLayout android:id="@+id/page_register_ek1"
             android:layout_marginTop="0dp"
             android:layout_marginStart="0dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content" >
 
             <View
                 android:id="@+id/_bg__register_ek2"
@@ -35,7 +32,6 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_width="390dp"
                 android:layout_height="212dp" />
 
-
             <EditText
                 android:id="@+id/InputUsername"
                 android:layout_width="330dp"
@@ -52,12 +48,9 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_marginStart="27dp"
                 android:layout_marginTop="460dp"
                 android:gravity="center"
-
                 android:hint="password"
                 android:layout_width="330dp"
                 android:layout_height="60dp" />
-
-
 
             <RelativeLayout
                 android:id="@+id/component_1"
@@ -94,13 +87,18 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
-
-
-
-
-
-
             </RelativeLayout>
+
+            <TextView android:id="@+id/register_ek4"
+                android:textSize="16sp"
+                android:textColor="@color/username_color"
+                android:layout_marginLeft="36dp"
+                android:layout_marginTop="545dp"
+                android:layout_width="146.6dp"
+                android:layout_height="24.6dp"
+                android:clickable="true"
+                android:text="Register now!" />
+
             <View   android:id="@+id/ellipse_1"
                 android:background="@drawable/ellipse_1_shape"
                 android:layout_marginStart="92.6dp"
@@ -126,8 +124,7 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_marginTop="723dp"
                 android:layout_marginStart="104dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <View
                     android:id="@+id/_bg__google_logo_ek1"
@@ -179,8 +176,7 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_marginTop="723dp"
                 android:layout_marginStart="172dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <View   android:id="@+id/_bg__facbook_ek1"
                     android:background="@drawable/_bg__facbook_ek1_shape"
@@ -207,13 +203,11 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
 
             </RelativeLayout>
 
-
             <RelativeLayout android:id="@+id/group"
                 android:layout_marginTop="723dp"
                 android:layout_marginStart="242dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content" >
 
                 <View   android:id="@+id/_bg__group_ek1"
                     android:background="@drawable/_bg__group_ek1_shape"
@@ -256,8 +250,7 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_marginTop="669dp"
                 android:layout_width="96.2dp"
                 android:layout_height="18.2dp"
-                android:text="@string/or_sign_up_with_string"
-                />
+                android:text="@string/or_sign_up_with_string" />
 
 
             <TextView android:id="@+id/forgot_password__"
@@ -267,8 +260,7 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_marginTop="545dp"
                 android:layout_width="146.6dp"
                 android:layout_height="24.6dp"
-                android:text="@string/forgot_password___string"
-                />
+                android:text="@string/forgot_password___string" />
 
 
 
@@ -280,8 +272,7 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
                 android:layout_marginTop="330dp"
                 android:layout_width="187.4dp"
                 android:layout_height="37.4dp"
-                android:text="login_details"
-                />
+                android:text="login_details" />
 
             <ImageView
                 android:id="@+id/image_2"
@@ -303,7 +294,6 @@ android:layout_width="match_parent" android:layout_height="wrap_content" >
 
         </RelativeLayout>
     </RelativeLayout>
-
 
 </ScrollView>
 </HorizontalScrollView>

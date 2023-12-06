@@ -39,8 +39,8 @@ public class activity_register extends AppCompatActivity {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private Button register,login ;
-//    private ImageButton login;
+    private Button register;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +49,6 @@ public class activity_register extends AppCompatActivity {
         PASSWORD = findViewById(R.id.inputPass);
         SAMEPASS = findViewById(R.id.inputSamePass);
         register = findViewById(R.id.btnregister);
-//        login = findViewById(R.id.btnlogin);
 
 
         socket = SocketConnection.get().getSocket();
@@ -77,8 +76,9 @@ public class activity_register extends AppCompatActivity {
                         // 顯示 server 回傳的訊息
                         if (response != null) {
                             Toast.makeText(activity_register.this, response, Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(activity_register.this,activity_login.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(activity_register.this,activity_login.class);
+//                            startActivity(intent);
+                            finish();
                         }
                     } else {
                         // 確認密碼 跟密碼不同
