@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +21,10 @@ import java.util.List;
 
 public class activity_client extends AppCompatActivity {
     private String msgFromGroupChat;
+    private ScrollView scrollView;
     private TextView receivedMessages;
     private EditText editText;
-    private Button button;
+    private Button sentButton;
     String username;
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -35,9 +37,10 @@ public class activity_client extends AppCompatActivity {
         setContentView(R.layout.activity_client);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
+        scrollView = findViewById(R.id.scrollView);
         receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
-        button = findViewById(R.id.button);
+        sentButton = findViewById(R.id.sentButton);
 
         socket = SocketConnection.get().getSocket();
         try {
@@ -59,10 +62,11 @@ public class activity_client extends AppCompatActivity {
             }
         }).start();
 
-        button.setOnClickListener(new View.OnClickListener() {
+        sentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage(editText.getText().toString());
+                editText.getText().clear();
             }
         });
     }
@@ -78,6 +82,7 @@ public class activity_client extends AppCompatActivity {
                             @Override
                             public void run() {
                                 receivedMessages.append(msgFromGroupChat  + "\n");
+                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                             }
                         });
                     }catch (IOException e){

@@ -20,7 +20,8 @@
 
         <activity
             android:name=".activity_client"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustResize">
         </activity>
 
         <activity
