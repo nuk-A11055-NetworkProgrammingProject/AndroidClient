@@ -18,8 +18,8 @@ public class SlideshowFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        com.example.myapplication.ui.slideshow.SlideshowViewModel slideshowViewModel =
-                new ViewModelProvider(this).get(com.example.myapplication.ui.slideshow.SlideshowViewModel.class);
+        com.example.tcp.ui.slideshow.SlideshowViewModel slideshowViewModel =
+                new ViewModelProvider(this).get(com.example.tcp.ui.slideshow.SlideshowViewModel.class);
 
         binding = FragmentSlideshowBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

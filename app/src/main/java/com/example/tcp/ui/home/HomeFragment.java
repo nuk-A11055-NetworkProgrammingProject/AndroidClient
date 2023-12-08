@@ -18,8 +18,8 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        com.example.myapplication.ui.home.HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(com.example.myapplication.ui.home.HomeViewModel.class);
+        com.example.tcp.ui.home.HomeViewModel homeViewModel =
+                new ViewModelProvider(this).get(com.example.tcp.ui.home.HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

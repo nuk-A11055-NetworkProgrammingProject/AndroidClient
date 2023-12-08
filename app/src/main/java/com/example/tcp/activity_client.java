@@ -27,6 +27,7 @@ public class activity_client extends AppCompatActivity {
     private String msgFromGroupChat;
     private ScrollView scrollView;
     private TextView receivedMessages;
+    private TextView TEST;
     private EditText editText;
     private FrameLayout layoutSend;
     String username;
@@ -41,11 +42,11 @@ public class activity_client extends AppCompatActivity {
         setContentView(R.layout.activity_client);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-//        scrollView = findViewById(R.id.scrollView);
-//        receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
         layoutSend = (android.widget.FrameLayout) findViewById(R.id.layoutSend);
 
+        String groupName = intent.getStringExtra("group_name");
+//        TEST.setText(groupName);
         socket = SocketConnection.get().getSocket();
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -57,11 +58,6 @@ public class activity_client extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-//                bufferedWriter.write(username);
-//                bufferedWriter.newLine();
-//                bufferedWriter.flush();
-//                receivedMessages.append("client : " + username  + " is connect" + "\n");
-//                sendPendingMessages();
                 listenForMessage();
             }
         }).start();
@@ -115,12 +111,12 @@ public class activity_client extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                receivedMessages.append(msgFromGroupChat  + "\n");
-                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//                                receivedMessages.append(msgFromGroupChat  + "\n");
+//                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                             }
                         });
                     }catch (IOException e){
-//                        closeEverything(socket,bufferedReader,bufferedWriter);
+                        closeEverything(socket,bufferedReader,bufferedWriter);
                     }
                 }
             }
@@ -158,13 +154,6 @@ public class activity_client extends AppCompatActivity {
             }
         }).start();
     }
-//receivedMessages.append(editText.getText().toString() + "\n");
-    private void sendPendingMessages() {
-        for (String message : pendingMessages) {
-            receivedMessages.append(username + " : " + message + "\n");
-            sendMessage(message);
-        }
-        pendingMessages.clear();
-    }
+
 
 }
