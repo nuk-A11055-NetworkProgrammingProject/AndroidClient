@@ -41,8 +41,8 @@ public class activity_client extends AppCompatActivity {
         setContentView(R.layout.activity_client);
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
-        scrollView = findViewById(R.id.scrollView);
-        receivedMessages = findViewById(R.id.receivedMessages);
+//        scrollView = findViewById(R.id.scrollView);
+//        receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
         layoutSend = (android.widget.FrameLayout) findViewById(R.id.layoutSend);
 
@@ -89,7 +89,7 @@ public class activity_client extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.msg_layout, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.msg_item_layout, parent, false);
             return new ViewHolder(view);
         }
 
