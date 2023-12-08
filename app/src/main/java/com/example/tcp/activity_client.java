@@ -2,13 +2,17 @@ package com.example.tcp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,7 +28,7 @@ public class activity_client extends AppCompatActivity {
     private ScrollView scrollView;
     private TextView receivedMessages;
     private EditText editText;
-    private Button sentButton;
+    private FrameLayout layoutSend;
     String username;
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -40,7 +44,7 @@ public class activity_client extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView);
         receivedMessages = findViewById(R.id.receivedMessages);
         editText = findViewById(R.id.editText);
-        sentButton = findViewById(R.id.sentButton);
+        layoutSend = (android.widget.FrameLayout) findViewById(R.id.layoutSend);
 
         socket = SocketConnection.get().getSocket();
         try {
@@ -62,7 +66,7 @@ public class activity_client extends AppCompatActivity {
             }
         }).start();
 
-        sentButton.setOnClickListener(new View.OnClickListener() {
+        layoutSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage(editText.getText().toString());
@@ -70,6 +74,36 @@ public class activity_client extends AppCompatActivity {
             }
         });
     }
+
+    private class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
+        class ViewHolder extends RecyclerView.ViewHolder{
+            TextView msgName, msgContent, msgTime;
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                msgName = itemView.findViewById(R.id.msgName);
+                msgContent = itemView.findViewById(R.id.msgContent);
+                msgTime = itemView.findViewById(R.id.msgTime);
+            }
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.msg_layout, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return 0;
+        }
+    }
+
     public void listenForMessage(){
         new Thread(new Runnable() {
             @Override
