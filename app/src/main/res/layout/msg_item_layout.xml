@@ -1,30 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
 
-    <TextView
-        android:id="@+id/msgName"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/msgContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/background_msg"
-        android:textColor="@color/white"
-        android:textSize="13sp"
-        android:text="TextView" />
+        <TextView
+            android:id="@+id/msgName"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="TextView"
+            android:textSize="20dp"
+            android:gravity="bottom"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/msgContent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/msgTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        <TextView
+            android:autoSizeTextType="uniform"
+            android:id="@+id/msgContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_msg"
+            android:text="TextView"
+            android:layout_marginStart="5dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/msgTime"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/msgName"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/msgTime"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="TextView"
+            android:textSize="15dp"
+            android:layout_marginStart="5dp"
+            android:gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/msgContent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>
