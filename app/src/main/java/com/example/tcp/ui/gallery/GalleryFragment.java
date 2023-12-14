@@ -2,12 +2,7 @@ package com.example.tcp.ui.gallery;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,10 +54,10 @@ public class GalleryFragment extends Fragment {
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         AA = root.findViewById(R.id.wfw);
+
         // 建立socket + 取得名字
         Intent intent = requireActivity().getIntent();
-
-//        username = intent.getStringExtra("username");
+        username = intent.getStringExtra("username");
         socket = SocketConnection.get().getSocket();
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -70,12 +65,14 @@ public class GalleryFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         add = root.findViewById(R.id.add);
         layout = root.findViewById(R.id.container);
 
-        buildDialog();
         // 檢查目前有哪些聊天頻道
         check_now();
+
+        buildDialog();
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -143,13 +140,14 @@ public class GalleryFragment extends Fragment {
 
                         String MSG = bufferedReader.readLine();
 
-
                         String[] tableNames = MSG.split(":");
                         ArrayList<String> having_group = new ArrayList<>();
                         for (String tableName : tableNames) {
                             having_group.add(tableName);
                         }
+
                         AA.setText(having_group.toString());
+
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -164,10 +162,12 @@ public class GalleryFragment extends Fragment {
             }
         });
         thread.start();
-
     }
 
     private void first_time_add_card(ArrayList<String> name) {
+        layout.removeAllViews();
+        String len = Integer.toString(name.size());
+        Toast.makeText(getActivity(), len, Toast.LENGTH_LONG).show();
         flag = false; // 重置 flag 變數
         for (String nameString : name) {
             if (flag == false) {
@@ -185,7 +185,7 @@ public class GalleryFragment extends Fragment {
                     Intent intent = new Intent(context, activity_client.class);
                     intent.putExtra("group_name", nameView.getText().toString());
                     //要接到名字
-//                    intent.putExtra("username", username.toString());
+                    intent.putExtra("username", username.toString());
                     context.startActivity(intent);
                 }
             });
@@ -202,5 +202,19 @@ public class GalleryFragment extends Fragment {
 
         nameView.setText(name);
         layout.addView(view);
+
+        Button GOGO = view.findViewById(R.id.GOGO);
+
+        GOGO.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = requireContext();
+                Intent intent = new Intent(context, activity_client.class);
+                intent.putExtra("group_name", nameView.getText().toString());
+                //要接到名字
+                intent.putExtra("username", username.toString());
+                context.startActivity(intent);
+            }
+        });
     }
 }

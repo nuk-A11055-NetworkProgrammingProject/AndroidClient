@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,7 +26,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class activity_client extends AppCompatActivity {
     private String[] splitReceivedMsg;
@@ -51,17 +57,14 @@ public class activity_client extends AppCompatActivity {
 
 
         msgArray = new ArrayList<>();
-        msgArray.add(new MsgItem("tom", "hello, world", "1312"));
-        msgArray.add(new MsgItem("tom", "hello, world", "1312"));
-        msgArray.add(new MsgItem("tom", "hello, world", "1312"));
-        msgArray.add(new MsgItem("tom", "hello, world", "1312"));
-
         myAdapter = new MyAdapter(activity_client.this, msgArray);
 
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity_client.this));
 
+        // 取得群組名稱
         String groupName = intent.getStringExtra("group_name");
+
         socket = SocketConnection.get().getSocket();
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -73,6 +76,17 @@ public class activity_client extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    // 通知 server 用戶已進入群組聊天及進入的群組名稱
+                    bufferedWriter.write("ENTERGROUP" + groupName);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                } catch (IOException e) {
+
+                }
+
+                // 讀完歷史訊息再接收廣播訊息
+                readHistoryMessage();
                 listenForMessage();
             }
         }).start();
@@ -86,6 +100,39 @@ public class activity_client extends AppCompatActivity {
         });
     }
 
+    public void  readHistoryMessage() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 接收歷史訊息
+                while (socket.isConnected()) {
+                    try {
+                        String msgName = bufferedReader.readLine();
+                        String msgContent = bufferedReader.readLine();
+                        String msgTime = bufferedReader.readLine();
+
+                        // 若收到歷史訊息結束的 signal 就跳出迴圈
+                        if (msgName.equals("end") && msgContent.equals("end")
+                                && msgTime.equals("end")) {
+                            break;
+                        }
+
+                        // 加入訊息至msgArray
+                        msgArray.add(new MsgItem(msgName, msgContent, msgTime));
+                    } catch (IOException e) {
+                        closeEverything(socket, bufferedReader, bufferedWriter);
+                    }
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void listenForMessage() {
         new Thread(new Runnable() {
             @Override
@@ -93,12 +140,12 @@ public class activity_client extends AppCompatActivity {
                 while (socket.isConnected()) {
                     try {
                         // 接收伺服器broadcast的訊息
-                        String receivedMsg = bufferedReader.readLine(); // read broadcast from server
-                        receivedMsg += ":1213";   // set test time
-                        // 切割出訊息內容(名子、訊息內容、時間)
-                        splitReceivedMsg = receivedMsg.split(":");  // split message
+                        String msgName = bufferedReader.readLine();
+                        String msgContent = bufferedReader.readLine();
+                        String msgTime = bufferedReader.readLine();
+
                         // 加入訊息至msgArray
-                        msgArray.add(new MsgItem(splitReceivedMsg));
+                        msgArray.add(new MsgItem(msgName, msgContent, msgTime));
                         runOnUiThread(new Runnable() {  // 刷新聊天介面
                             @Override
                             public void run() {
@@ -118,7 +165,7 @@ public class activity_client extends AppCompatActivity {
 
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
-            if (bufferedReader != null) {
+            if(bufferedReader != null){
                 bufferedReader.close();
             }
             if (socket != null) {
@@ -138,8 +185,13 @@ public class activity_client extends AppCompatActivity {
             public void run() {
                 try {
                     if (bufferedWriter != null) {
-                        bufferedWriter.write(username + ":" + message);
-                        bufferedWriter.newLine();
+                        bufferedWriter.write(username + "\n");
+                        bufferedWriter.write(message + "\n");
+
+                        // 取得目前時間
+                        Date currentDate = new Date();
+                        String timestamp = new Timestamp(currentDate.getTime()).toString();
+                        bufferedWriter.write(timestamp + "\n");
                         bufferedWriter.flush();
                     }
                 } catch (IOException e) {

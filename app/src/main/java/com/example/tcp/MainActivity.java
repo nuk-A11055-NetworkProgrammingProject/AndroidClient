@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 View view1 = LayoutInflater.from(MainActivity.this).inflate(R.layout.dia_layout,null);
@@ -114,8 +113,4 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
-
-    
-
 }
