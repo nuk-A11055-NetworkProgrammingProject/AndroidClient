@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +44,8 @@ public class activity_client extends AppCompatActivity {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+    private Thread broadcastThread;
+    private boolean leave = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,48 @@ public class activity_client extends AppCompatActivity {
                 editText.getText().clear();
             }
         });
+
+        // 按下返回要做的事
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Thread thread =new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if (bufferedWriter != null) {
+                                // 通知 server 已離開群組
+                                bufferedWriter.write("leave\n");
+                                bufferedWriter.write("leave\n");
+                                bufferedWriter.write("leave\n");
+                                bufferedWriter.flush();
+                            }
+                        } catch (IOException e) {
+//                    closeEverything(socket, bufferedReader, bufferedWriter);
+                        }
+                    }
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                // 結束 Activity
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 在Activity被銷毀時關閉執行緒
+        if (broadcastThread != null) {
+//            leave = true;
+            broadcastThread.interrupt(); // 中斷執行緒
+        }
     }
 
     public void  readHistoryMessage() {
@@ -131,36 +176,48 @@ public class activity_client extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        runOnUiThread(new Runnable() {  // 刷新聊天介面
+            @Override
+            public void run() {
+                // 訊息超出螢幕時，自動往下滾動
+                recyclerView.scrollToPosition(msgArray.size() - 1);
+            }
+        });
     }
 
     public void listenForMessage() {
-        new Thread(new Runnable() {
+        broadcastThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (socket.isConnected()) {
+                while (socket.isConnected() && !Thread.currentThread().isInterrupted()) {
                     try {
-                        // 接收伺服器broadcast的訊息
-                        String msgName = bufferedReader.readLine();
-                        String msgContent = bufferedReader.readLine();
-                        String msgTime = bufferedReader.readLine();
+                        try {
+                            // 接收伺服器broadcast的訊息
+                            String msgName = bufferedReader.readLine();
+                            String msgContent = bufferedReader.readLine();
+                            String msgTime = bufferedReader.readLine();
 
-                        // 加入訊息至msgArray
-                        msgArray.add(new MsgItem(msgName, msgContent, msgTime));
-                        runOnUiThread(new Runnable() {  // 刷新聊天介面
-                            @Override
-                            public void run() {
-                                // 刷新聊天訊息
-                                myAdapter.notifyItemInserted(msgArray.size() - 1);
-                                // 訊息超出螢幕時，自動往下滾動
-                                recyclerView.scrollToPosition(msgArray.size() - 1);
-                            }
-                        });
+                            // 加入訊息至msgArray
+                            msgArray.add(new MsgItem(msgName, msgContent, msgTime));
+                            runOnUiThread(new Runnable() {  // 刷新聊天介面
+                                @Override
+                                public void run() {
+                                    // 刷新聊天訊息
+                                    myAdapter.notifyItemInserted(msgArray.size() - 1);
+                                    // 訊息超出螢幕時，自動往下滾動
+                                    recyclerView.scrollToPosition(msgArray.size() - 1);
+                                }
+                            });
+                        } catch (SocketTimeoutException e) {
+
+                        }
                     } catch (IOException e) {
                         closeEverything(socket, bufferedReader, bufferedWriter);
                     }
                 }
             }
-        }).start();
+        });
+        broadcastThread.start();
     }
 
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {

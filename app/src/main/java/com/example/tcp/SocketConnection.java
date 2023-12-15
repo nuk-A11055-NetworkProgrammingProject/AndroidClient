@@ -15,6 +15,7 @@ public class SocketConnection {
             public void run() {
                 try {
                     socket = new Socket("10.0.2.2", 12346);
+                    socket.setSoTimeout(1000); // 設定 timeout 時間
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
